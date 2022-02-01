@@ -48,5 +48,16 @@ export class LambdaDestinationStack extends Stack {
     snsTopic.addSubscription(
       new snsSubscriptions.LambdaSubscription(destinedLambda) // Use a Lambda function as a subscription target
     );
+
+    // =========================================================================
+    // TheSuccessLambda. This lambda is called when the destined lambda succeeds in processing the event
+    // =========================================================================
+    const successLambda = new lambda.Function(this, "TheSuccessLambda", {
+      functionName: "TheSuccessLambda",
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: "success.handler",
+      code: lambda.Code.fromAsset("lambda"),
+      timeout: cdk.Duration.seconds(300),
+    });
   }
 }
