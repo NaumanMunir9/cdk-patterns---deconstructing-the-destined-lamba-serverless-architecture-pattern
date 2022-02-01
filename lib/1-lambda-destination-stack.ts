@@ -28,5 +28,18 @@ export class LambdaDestinationStack extends Stack {
       topicName: "TheDestinedLambdaEventBusTopic",
       displayName: "TheDestinedLambdaEventBusTopic",
     });
+
+    // =========================================================================
+    // lambda function for the destined lambda
+    // =========================================================================
+    const destinedLambda = new lambda.Function(this, "TheDestinedLambda", {
+      functionName: "TheDestinedLambda",
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: "destined.handler",
+      code: lambda.Code.fromAsset("lambda"),
+      retryAttempts: 0,
+      onSuccess: new lambdaDestinations.EventBridgeDestination(eventBus),
+      onFailure: new lambdaDestinations.EventBridgeDestination(eventBus),
+    });
   }
 }
