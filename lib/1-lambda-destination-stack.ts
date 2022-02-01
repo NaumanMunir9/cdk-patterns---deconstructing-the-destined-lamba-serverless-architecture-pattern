@@ -94,5 +94,21 @@ export class LambdaDestinationStack extends Stack {
       handler: "failure.handler",
       code: lambda.Code.fromAsset("lambda"),
     });
+
+    // =========================================================================
+    // Defines an EventBridge Rule in this stack. The rule will trigger on the failure event of the destined lambda and will invoke the failure Lambda function
+    // =========================================================================
+    const failureEventRule = new events.Rule(this, "TheFailureEventRule", {
+      eventBus,
+      ruleName: "TheFailureEventRule",
+      description: "All failure events are caught here and logged centrally",
+      eventPattern: {
+        detail: {
+          responsePayload: {
+            errorType: ["Error"],
+          },
+        },
+      },
+    });
   }
 }
