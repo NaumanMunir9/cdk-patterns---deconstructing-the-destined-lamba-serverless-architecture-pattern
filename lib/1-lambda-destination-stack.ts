@@ -144,5 +144,10 @@ export class LambdaDestinationStack extends Stack {
         assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
       }
     );
+
+    // =========================================================================
+    // snsTopic for the apiGateway. This is the topic that will be used to send the event to the destined lambda
+    // =========================================================================
+    snsTopic.grantPublish(apiGatewayIamRole);
   }
 }
