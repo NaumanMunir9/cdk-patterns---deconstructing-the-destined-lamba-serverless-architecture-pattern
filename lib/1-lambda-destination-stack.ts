@@ -84,5 +84,15 @@ export class LambdaDestinationStack extends Stack {
     // Adds a target to the rule. The abstract class RuleTarget can be extended to define new targets.
     // =========================================================================
     successEventRule.addTarget(new eventsTargets.LambdaFunction(successLambda)); // Use an AWS Lambda function as an event rule target
+
+    // =========================================================================
+    // failureLambda. This lambda is called when the destined lambda fails to process the event
+    // =========================================================================
+    const failureLambda = new lambda.Function(this, "TheFailureLambda", {
+      functionName: "TheFailureLambda",
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "failure.handler",
+      code: lambda.Code.fromAsset("lambda"),
+    });
   }
 }
