@@ -20,5 +20,13 @@ export class LambdaDestinationStack extends Stack {
     const eventBus = new events.EventBus(this, "TheDestinedLambdaEventBus", {
       eventBusName: "TheDestinedLambdaEventBus",
     });
+
+    // =========================================================================
+    // A new SNS topic. sns topic for the event bus
+    // =========================================================================
+    const snsTopic = new sns.Topic(this, "TheDestinedLambdaEventBusTopic", {
+      topicName: "TheDestinedLambdaEventBusTopic",
+      displayName: "TheDestinedLambdaEventBusTopic",
+    });
   }
 }
