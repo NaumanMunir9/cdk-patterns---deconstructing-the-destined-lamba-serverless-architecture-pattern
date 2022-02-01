@@ -133,5 +133,16 @@ export class LambdaDestinationStack extends Stack {
         },
       }
     );
+
+    // =========================================================================
+    // apiGateway iamRole. This is the role that will be used to invoke the API Gateway
+    // =========================================================================
+    const apiGatewayIamRole = new iam.Role(
+      this,
+      "TheDestinedApiGatewayIamRole",
+      {
+        assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
+      }
+    );
   }
 }
