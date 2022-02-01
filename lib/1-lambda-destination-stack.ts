@@ -110,5 +110,10 @@ export class LambdaDestinationStack extends Stack {
         },
       },
     });
+
+    // =========================================================================
+    // Adds a target to the rule. The abstract class RuleTarget can be extended to define new targets.
+    // =========================================================================
+    failureEventRule.addTarget(new eventsTargets.LambdaFunction(failureLambda)); // Use an AWS Lambda function as an event rule target
   }
 }
