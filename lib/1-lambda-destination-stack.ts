@@ -149,5 +149,26 @@ export class LambdaDestinationStack extends Stack {
     // snsTopic for the apiGateway. This is the topic that will be used to send the event to the destined lambda
     // =========================================================================
     snsTopic.grantPublish(apiGatewayIamRole);
+
+    // =========================================================================
+    // responseModel. This is the response model that will be used by the API Gateway. This is the response that will be sent to the client when the destined lambda succeeds
+    // =========================================================================
+    const responseModel = apiGatewayRestApi.addModel(
+      "TheDestinedResponseModel",
+      {
+        contentType: "application/json",
+        modelName: "TheDestinedResponseModel",
+        schema: {
+          schema: apigateway.JsonSchemaVersion.DRAFT4,
+          title: "TheDestinedResponseModel",
+          type: apigateway.JsonSchemaType.OBJECT,
+          properties: {
+            message: {
+              type: apigateway.JsonSchemaType.STRING,
+            },
+          },
+        },
+      }
+    );
   }
 }
