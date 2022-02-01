@@ -170,5 +170,29 @@ export class LambdaDestinationStack extends Stack {
         },
       }
     );
+
+    // =========================================================================
+    // errorResponseModel. This is the response model that will be used by the API Gateway. This is the response that will be sent to the client when the destined lambda fails
+    // =========================================================================
+    const errorResponseModel = apiGatewayRestApi.addModel(
+      "TheDestinedErrorResponseModel",
+      {
+        contentType: "application/json",
+        modelName: "TheDestinedErrorResponseModel",
+        schema: {
+          schema: apigateway.JsonSchemaVersion.DRAFT4,
+          title: "TheDestinedErrorResponseModel",
+          type: apigateway.JsonSchemaType.OBJECT,
+          properties: {
+            message: {
+              type: apigateway.JsonSchemaType.STRING,
+            },
+            state: {
+              type: apigateway.JsonSchemaType.STRING,
+            },
+          },
+        },
+      }
+    );
   }
 }
