@@ -34,7 +34,7 @@ export class LambdaDestinationStack extends Stack {
     // =========================================================================
     const destinedLambda = new lambda.Function(this, "TheDestinedLambda", {
       functionName: "TheDestinedLambda",
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "destined.handler",
       code: lambda.Code.fromAsset("lambda"),
       retryAttempts: 0,
@@ -54,10 +54,30 @@ export class LambdaDestinationStack extends Stack {
     // =========================================================================
     const successLambda = new lambda.Function(this, "TheSuccessLambda", {
       functionName: "TheSuccessLambda",
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "success.handler",
       code: lambda.Code.fromAsset("lambda"),
       timeout: cdk.Duration.seconds(300),
+    });
+
+    // =========================================================================
+    // Defines an EventBridge Rule in this stack. The rule will trigger on the success event of the destined lambda and will invoke the success Lambda function
+    // =========================================================================
+    const successEventRule = new events.Rule(this, "TheSuccessEventRule", {
+      eventBus,
+      ruleName: "TheSuccessEventRule",
+      description: "All success events are caught here and logged centrally",
+      eventPattern: {
+        detail: {
+          requestContext: {
+            condition: ["Success"],
+          },
+          responsePayload: {
+            source: ["the-destined-lambda"],
+            action: ["message"],
+          },
+        },
+      },
     });
   }
 }
