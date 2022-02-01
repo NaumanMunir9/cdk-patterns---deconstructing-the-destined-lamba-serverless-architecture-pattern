@@ -41,5 +41,12 @@ export class LambdaDestinationStack extends Stack {
       onSuccess: new lambdaDestinations.EventBridgeDestination(eventBus),
       onFailure: new lambdaDestinations.EventBridgeDestination(eventBus),
     });
+
+    // =========================================================================
+    // Subscribe some endpoint to this topic
+    // =========================================================================
+    snsTopic.addSubscription(
+      new snsSubscriptions.LambdaSubscription(destinedLambda) // Use a Lambda function as a subscription target
+    );
   }
 }
