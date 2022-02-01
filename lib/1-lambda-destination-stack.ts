@@ -115,5 +115,23 @@ export class LambdaDestinationStack extends Stack {
     // Adds a target to the rule. The abstract class RuleTarget can be extended to define new targets.
     // =========================================================================
     failureEventRule.addTarget(new eventsTargets.LambdaFunction(failureLambda)); // Use an AWS Lambda function as an event rule target
+
+    // =========================================================================
+    // apiGateway. This is the API Gateway that will be exposed to the outside world
+    // =========================================================================
+    const apiGatewayRestApi = new apigateway.RestApi(
+      this,
+      "TheDestinedApiGateway",
+      {
+        restApiName: "TheDestinedApiGateway",
+        deployOptions: {
+          // Options for the API Gateway stage that will always point to the latest deployment when deploy is enabled.
+          stageName: "prod",
+          metricsEnabled: true,
+          dataTraceEnabled: true,
+          loggingLevel: apigateway.MethodLoggingLevel.INFO,
+        },
+      }
+    );
   }
 }
